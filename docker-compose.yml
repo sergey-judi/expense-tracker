@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  et-db:
+    image: postgres:13.3
+    container_name: expense-tracker-db
+    restart: always
+    environment:
+      - POSTGRES_DB=expense-tracker
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
