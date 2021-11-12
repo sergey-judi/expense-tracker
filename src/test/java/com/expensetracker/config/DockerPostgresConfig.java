@@ -2,6 +2,7 @@ package com.expensetracker.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -12,9 +13,14 @@ import javax.sql.DataSource;
 @Configuration
 public class DockerPostgresConfig {
 
-  private static final String DB_NAME = "expense-tracker";
-  private static final String POSTGRES_USER = "postgres";
-  private static final String POSTGRES_PASSWORD = "password";
+  @Value("${spring.datasource.name}")
+  private String DB_NAME;
+
+  @Value("${spring.datasource.username}")
+  private String POSTGRES_USER;
+
+  @Value("${spring.datasource.password}")
+  private String POSTGRES_PASSWORD;
 
   @Bean(destroyMethod = "stop")
   public PostgreSQLContainer postgreSQLContainer() {
