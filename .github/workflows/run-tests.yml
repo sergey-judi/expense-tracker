@@ -1,29 +1,18 @@
-name: Maven Run Tests when push to main/develop/features branchse and newly created PRs.
+name: Maven Run Tests
 
 on:
-    # Trigger the workflow on push for the main branch
-    # and pull request for main and card-* prefix branches
-    push:
-        branches:
-            - main
-            - develop
-            - 'feature/**'
-        pull_request:
-            branches:
-            	- main
-                - develop
-                - # Push events to branches matching refs/heads/feature/*
-                - 'feature/**'
+  push:
+  pull_request:
+    branches:
+      - develop
 jobs:
-    build:
-        runs-on: windows-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Set up JDK 1.11
-                uses: actions/setup-java@v1
-                with:
-                    java-version: 1.11
-            - name: Build with Maven
-              run: mvn -B package --file pom.xml
-            - name: Test with Maven
-              run: mvn -B test --file pom.xml
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Build with Maven
+        run: mvn -ntp package
