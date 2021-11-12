@@ -1,3 +1,0 @@
-CREATE TABLE IF NOT EXISTS transaction (
-    id SERIAL PRIMARY KEY
-)
