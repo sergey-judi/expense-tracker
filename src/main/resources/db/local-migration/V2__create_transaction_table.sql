@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS transaction (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    type VARCHAR(10) NOT NULL,
+    amount DOUBLE NOT NULL,
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user (id)
+)
