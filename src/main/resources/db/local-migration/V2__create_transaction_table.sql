@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS transaction (
     type VARCHAR(10) NOT NULL,
     amount DOUBLE NOT NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES user_table (id)
 )
