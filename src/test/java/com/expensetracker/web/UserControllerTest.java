@@ -2,11 +2,15 @@ package com.expensetracker.web;
 
 import com.expensetracker.exception.ErrorCode;
 import com.expensetracker.web.dto.UserDto;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,6 +19,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerTest extends AbstractBaseControllerTest {
+
+  @Test
+  @SneakyThrows
+  void getAllUsers() {
+    int insertedUsersAmount = 3;
+
+    for (int i = 0; i < insertedUsersAmount; i++) {
+      insertUser();
+    }
+
+    MvcResult mvcResult = mockMvc.perform(get("/users"))
+        .andExpect(status().isOk())
+        .andReturn();
+
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    List<UserDto> userDtos = objectMapper.readValue(responseBody, new TypeReference<>() {});
+
+    assertTrue(userDtos.size() > insertedUsersAmount);
+  }
 
   @Test
   @SneakyThrows
