@@ -36,7 +36,7 @@ class UserControllerTest extends AbstractBaseControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString();
     List<UserDto> userDtos = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
-    assertTrue(userDtos.size() > insertedUsersAmount);
+    assertTrue(userDtos.size() >= insertedUsersAmount);
   }
 
   @Test
