@@ -1,6 +1,8 @@
 package com.expensetracker.web;
 
+import com.expensetracker.web.dto.CategoryDto;
 import com.expensetracker.web.dto.UserDto;
+import com.expensetracker.web.util.CategoryEntityProvider;
 import com.expensetracker.web.util.UserEntityProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -24,6 +26,9 @@ public abstract class AbstractBaseControllerTest {
   UserEntityProvider userEntityProvider;
 
   @Autowired
+  CategoryEntityProvider categoryEntityProvider;
+
+  @Autowired
   MockMvc mockMvc;
 
   @SneakyThrows
@@ -38,6 +43,20 @@ public abstract class AbstractBaseControllerTest {
 
     String responseBody = mvcResult.getResponse().getContentAsString();
     return objectMapper.readValue(responseBody, UserDto.class);
+  }
+
+  @SneakyThrows
+  public CategoryDto insertCategory() {
+    CategoryDto categoryDto = categoryEntityProvider.prepareCategoryDto();
+
+    MvcResult mvcResult = mockMvc.perform(post("/categories")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(serialize(categoryDto)))
+        .andExpect(status().isCreated())
+        .andReturn();
+
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    return objectMapper.readValue(responseBody, CategoryDto.class);
   }
 
   @SneakyThrows
