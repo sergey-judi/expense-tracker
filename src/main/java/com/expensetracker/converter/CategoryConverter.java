@@ -8,11 +8,17 @@ import org.springframework.stereotype.Component;
 public class CategoryConverter implements Converter<CategoryDto, Category> {
   @Override
   public Category toModel(CategoryDto dto) {
-    return null;
+    return new Category(
+        dto.getId(),
+        dto.getName()
+    );
   }
 
   @Override
   public CategoryDto toDto(Category model) {
-    return null;
+    return new CategoryDto(
+        model.getId(),
+        model.getName()
+    );
   }
 }
