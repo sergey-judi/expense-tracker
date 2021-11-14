@@ -48,7 +48,8 @@ class UserControllerTest extends AbstractBaseControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(insertedUser.getId()))
         .andExpect(jsonPath("$.fullName").value(insertedUser.getFullName()))
-        .andExpect(jsonPath("$.email").value(insertedUser.getEmail()));
+        .andExpect(jsonPath("$.email").value(insertedUser.getEmail()))
+        .andExpect(jsonPath("$.balance").value(insertedUser.getBalance()));
   }
 
   @Test
@@ -84,7 +85,35 @@ class UserControllerTest extends AbstractBaseControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(insertedUser.getId()))
         .andExpect(jsonPath("$.fullName").value(insertedUser.getFullName()))
-        .andExpect(jsonPath("$.email").value(insertedUser.getEmail()));
+        .andExpect(jsonPath("$.email").value(insertedUser.getEmail()))
+        .andExpect(jsonPath("$.balance").value(insertedUser.getBalance()));
+  }
+
+  @Test
+  @SneakyThrows
+  void createUserWithDefaultBalance() {
+    UserDto newUser = new UserDto(
+        null,
+        "user-default-balance-full-name",
+        "user-default-balance-email",
+        null
+    );
+
+    MvcResult mvcResult = mockMvc.perform(post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(serialize(newUser)))
+        .andExpect(status().isCreated())
+        .andReturn();
+
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    UserDto insertedUser = objectMapper.readValue(responseBody, UserDto.class);
+
+    mockMvc.perform(get("/users/{id}", insertedUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(insertedUser.getId()))
+        .andExpect(jsonPath("$.fullName").value(insertedUser.getFullName()))
+        .andExpect(jsonPath("$.email").value(insertedUser.getEmail()))
+        .andExpect(jsonPath("$.balance").value(0.0));
   }
 
   @Test
@@ -123,13 +152,15 @@ class UserControllerTest extends AbstractBaseControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(insertedUser.getId()))
         .andExpect(jsonPath("$.fullName").value(updatedUser.getFullName()))
-        .andExpect(jsonPath("$.email").value(updatedUser.getEmail()));
+        .andExpect(jsonPath("$.email").value(updatedUser.getEmail()))
+        .andExpect(jsonPath("$.balance").value(updatedUser.getBalance()));
 
     mockMvc.perform(get("/users/{id}", insertedUser.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(insertedUser.getId()))
         .andExpect(jsonPath("$.fullName").value(updatedUser.getFullName()))
-        .andExpect(jsonPath("$.email").value(updatedUser.getEmail()));
+        .andExpect(jsonPath("$.email").value(updatedUser.getEmail()))
+        .andExpect(jsonPath("$.balance").value(updatedUser.getBalance()));
   }
 
   @Test
@@ -159,13 +190,15 @@ class UserControllerTest extends AbstractBaseControllerTest {
     UserDto updatedUser1 = new UserDto(
         null,
         insertedUser2.getFullName(),
-        insertedUser2.getEmail()
+        insertedUser2.getEmail(),
+        null
     );
 
     UserDto updatedUser2 = new UserDto(
         null,
         insertedUser1.getFullName(),
-        insertedUser1.getEmail()
+        insertedUser1.getEmail(),
+        null
     );
 
     String expectedErrorCode1 = ErrorCode.ENTITY_ALREADY_EXISTS.getCode();

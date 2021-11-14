@@ -6,6 +6,8 @@ import com.expensetracker.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
 public class UserEntityProvider {
@@ -18,8 +20,9 @@ public class UserEntityProvider {
     Integer id = null;
     String fullName = String.format("user-%s-full-name", currentTime);
     String email = String.format("user-%s-email", currentTime);
+    Double balance = Double.parseDouble(String.format("%.2f", new Random().nextDouble() * 100.0));
 
-    return new UserDto(id, fullName, email);
+    return new UserDto(id, fullName, email, balance);
   }
 
   public User preapareUserModel() {
