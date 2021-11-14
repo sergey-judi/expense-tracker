@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +42,9 @@ public class UserServiceImpl implements UserService {
   @Override
   public User updateUserById(Integer userId, User updatedUser) {
     assertUserExists(userId);
+    User userInDb = userRepository.findByEmail(updatedUser.getEmail());
 
-    if (userRepository.existsByEmail(updatedUser.getEmail())) {
+    if (Objects.nonNull(userInDb) && !Objects.equals(userId, userInDb.getId())) {
       String message = format(
           "Wasn't able to update existing user with id='%s'. User with email='%s' already exists",
           userId, updatedUser.getEmail()

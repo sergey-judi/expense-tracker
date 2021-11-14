@@ -29,4 +29,7 @@ public class User {
   @Column(name = "email", nullable = false)
   private String email;
 
+  @Column(name = "balance", nullable = false)
+  private Double balance;
+
 }
