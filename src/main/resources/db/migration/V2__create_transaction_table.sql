@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS transaction (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    type VARCHAR(10) NOT NULL,
-    amount DECIMAL NOT NULL,
-    time DATE NOT NULL DEFAULT CURRENT_DATE,
-    FOREIGN KEY (user_id) REFERENCES user_table (id) ON UPDATE CASCADE
-)
