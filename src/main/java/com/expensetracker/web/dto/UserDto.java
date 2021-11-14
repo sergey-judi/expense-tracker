@@ -7,6 +7,8 @@ import lombok.Value;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 
+import static java.util.Objects.isNull;
+
 @Value
 public class UserDto {
 
@@ -19,12 +21,16 @@ public class UserDto {
   @NotBlank
   String email;
 
+  Double balance;
+
   @JsonCreator
   public UserDto(@JsonProperty("id") Integer id,
                  @JsonProperty("fullName") String fullName,
-                 @JsonProperty("email") String email) {
+                 @JsonProperty("email") String email,
+                 @JsonProperty("balance") Double balance) {
     this.id = id;
     this.fullName = fullName;
     this.email = email;
+    this.balance = isNull(balance) ? 0.0 : balance;
   }
 }

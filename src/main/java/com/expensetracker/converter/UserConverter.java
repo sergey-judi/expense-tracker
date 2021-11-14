@@ -11,7 +11,8 @@ public class UserConverter implements Converter<UserDto, User> {
     return new User(
         dto.getId(),
         dto.getFullName(),
-        dto.getEmail()
+        dto.getEmail(),
+        dto.getBalance()
     );
   }
 
@@ -20,7 +21,8 @@ public class UserConverter implements Converter<UserDto, User> {
     return new UserDto(
         model.getId(),
         model.getFullName(),
-        model.getEmail()
+        model.getEmail(),
+        model.getBalance()
     );
   }
 }
