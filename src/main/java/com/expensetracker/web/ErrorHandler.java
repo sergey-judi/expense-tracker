@@ -7,6 +7,7 @@ import com.expensetracker.exception.UnsupportedTransactionTypeException;
 import com.expensetracker.exception.model.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,16 +29,19 @@ public class ErrorHandler {
   @ExceptionHandler({
       EntityAlreadyExistsException.class,
       UnsupportedTransactionTypeException.class,
-      MethodArgumentNotValidException.class
+      MethodArgumentNotValidException.class,
+      HttpMessageNotReadableException.class
   })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ErrorResponse handleAlreadyExists(Exception ex) {
+  public ErrorResponse handleBadRequest(Exception ex) {
     if (ex instanceof EntityAlreadyExistsException) {
       return buildErrorResponse(ENTITY_ALREADY_EXISTS, ex.getMessage());
     } else if (ex instanceof MethodArgumentNotValidException) {
       return buildValidationErrorResponse((MethodArgumentNotValidException) ex);
     } else if (ex instanceof UnsupportedTransactionTypeException) {
       return buildErrorResponse(UNSUPPORTED_TRANSACTION_TYPE, ex.getMessage());
+    } else if (ex instanceof HttpMessageNotReadableException) {
+      return buildUnsupportedTransactionTypeErrorResponse((HttpMessageNotReadableException) ex);
     }
     return buildErrorResponse(INTERNAL, ex.getMessage());
   }
@@ -91,6 +95,11 @@ public class ErrorHandler {
         .message(errorMessage)
         .validation(validation)
         .build();
+  }
+
+  private ErrorResponse buildUnsupportedTransactionTypeErrorResponse(HttpMessageNotReadableException ex) {
+    UnsupportedTransactionTypeException exception = (UnsupportedTransactionTypeException) ex.getCause().getCause();
+    return buildErrorResponse(UNSUPPORTED_TRANSACTION_TYPE, exception.getMessage());
   }
 
 }
