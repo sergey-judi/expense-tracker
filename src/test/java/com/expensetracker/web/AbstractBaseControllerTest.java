@@ -1,8 +1,10 @@
 package com.expensetracker.web;
 
 import com.expensetracker.web.dto.CategoryDto;
+import com.expensetracker.web.dto.TransactionDto;
 import com.expensetracker.web.dto.UserDto;
 import com.expensetracker.web.util.CategoryEntityProvider;
+import com.expensetracker.web.util.TransactionEntityProvider;
 import com.expensetracker.web.util.UserEntityProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -20,13 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public abstract class AbstractBaseControllerTest {
 
-  static ObjectMapper objectMapper = new ObjectMapper();
+  @Autowired
+  ObjectMapper objectMapper;
 
   @Autowired
   UserEntityProvider userEntityProvider;
 
   @Autowired
   CategoryEntityProvider categoryEntityProvider;
+
+  @Autowired
+  TransactionEntityProvider transactionEntityProvider;
 
   @Autowired
   MockMvc mockMvc;
@@ -57,6 +63,42 @@ public abstract class AbstractBaseControllerTest {
 
     String responseBody = mvcResult.getResponse().getContentAsString();
     return objectMapper.readValue(responseBody, CategoryDto.class);
+  }
+
+  @SneakyThrows
+  public TransactionDto insertTransaction(String type) {
+    UserDto userDto = insertUser();
+    CategoryDto categoryDto = insertCategory();
+    TransactionDto transactionDto = transactionEntityProvider.prepareTransactionDto(userDto, categoryDto, type);
+
+    return insertTransactionGeneric(transactionDto);
+  }
+
+  @SneakyThrows
+  public TransactionDto insertTransactionForDefiniteUser(UserDto userDto, String type) {
+    CategoryDto categoryDto = insertCategory();
+    TransactionDto transactionDto = transactionEntityProvider.prepareTransactionDto(userDto, categoryDto, type);
+
+    return insertTransactionGeneric(transactionDto);
+  }
+
+  @SneakyThrows
+  public TransactionDto insertTransactionForDefiniteUserAndCategory(UserDto userDto, CategoryDto categoryDto, String type) {
+    TransactionDto transactionDto = transactionEntityProvider.prepareTransactionDto(userDto, categoryDto, type);
+
+    return insertTransactionGeneric(transactionDto);
+  }
+
+  @SneakyThrows
+  private TransactionDto insertTransactionGeneric(TransactionDto transactionDto) {
+    MvcResult mvcResult = mockMvc.perform(post("/transactions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(serialize(transactionDto)))
+        .andExpect(status().isCreated())
+        .andReturn();
+
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    return objectMapper.readValue(responseBody, TransactionDto.class);
   }
 
   @SneakyThrows

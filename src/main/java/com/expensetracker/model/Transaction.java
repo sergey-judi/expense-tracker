@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
@@ -34,6 +36,11 @@ public class Transaction {
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
   @EqualsAndHashCode.Exclude
   private User user;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+  @EqualsAndHashCode.Exclude
+  private Category category;
 
   @Column(name = "type", nullable = false)
   @Enumerated(EnumType.STRING)
