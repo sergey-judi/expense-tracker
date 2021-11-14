@@ -32,4 +32,11 @@ public class User {
   @Column(name = "balance", nullable = false)
   private Double balance;
 
+  public void increaseBalance(Double amount) {
+    this.balance += amount;
+  }
+
+  public void decreaseBalance(Double amount) {
+    this.balance -= amount;
+  }
 }
