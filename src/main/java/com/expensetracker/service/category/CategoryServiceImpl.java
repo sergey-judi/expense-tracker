@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -43,8 +44,9 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public Category updateCategoryById(Integer categoryId, Category updatedCategory) {
     assertCategoryExists(categoryId);
+    Category categoryInDb = categoryRepository.findByName(updatedCategory.getName());
 
-    if (categoryRepository.existsByName(updatedCategory.getName())) {
+    if (Objects.nonNull(categoryInDb) && !Objects.equals(categoryId, categoryInDb.getId())) {
       String message = format(
           "Wasn't able to update existing category with id='%s'. Category with name='%s' already exists",
           categoryId, updatedCategory.getName()
