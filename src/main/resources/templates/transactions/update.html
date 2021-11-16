@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Transaction Management System</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction Management System</h1>
+        <hr>
+        <h2>Update Transaction</h2>
+
+        <form action="#" th:action="@{/web/transactions/{id}(id=*{id})}" th:object="${transaction}">
+
+            <div class="form-group">
+                <label for="userId" class="col-lg-4">User Id:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{userId}" class="form-control mb-4 col-4" id="userId">
+                </div>
+
+                <label for="categoryId" class="col-lg-4">Category Id:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{categoryId}" class="form-control mb-4 col-4" id="categoryId">
+                </div>
+
+                <label class="col-lg-4">Type:</label>
+                <div class="col-lg-8">
+                    <p th:text="*{type}" class="form-control mb-4 col-4"></p>
+                    <input type="hidden" th:field="*{type}">
+                </div>
+
+                <label for="userId" class="col-lg-4">Amount:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{amount}" placeholder="Amount" class="form-control mb-4 col-4">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-info col-2">Update</button>
+        </form>
+        <hr>
+        <a th:href = "@{/web/transactions}">Back to Transaction List</a>
+    </div>
+</body>
+</html>
