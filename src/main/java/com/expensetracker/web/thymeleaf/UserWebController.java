@@ -46,11 +46,11 @@ public class UserWebController {
     return "redirect:/web/users";
   }
 
-  @GetMapping("/update/{id}")
+  @GetMapping("/edit/{id}")
   public String updateUserForm(@PathVariable Integer id, Model model) {
     UserDto userDto = httpService.get(USER_URI + "/" + id, UserDto.class);
     model.addAttribute("user", userDto);
-    return "users/update";
+    return "users/edit";
   }
 
   @GetMapping("/{id}")

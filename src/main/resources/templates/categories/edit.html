@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Category Management System</h1>
         <hr>
-        <h2>Update Category</h2>
+        <h2>Edit Category</h2>
 
         <form action="#" th:action="@{/web/categories/{id}(id=*{id})}" th:object="${category}">
 
@@ -21,10 +21,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-info col-2">Update</button>
+            <button type="submit" class="btn btn-info">Save</button>
+            <a th:href = "@{/web/categories}" class="btn btn-secondary">Back</a>
         </form>
         <hr>
-        <a th:href = "@{/web/categories}">Back to Category List</a>
     </div>
 </body>
 </html>

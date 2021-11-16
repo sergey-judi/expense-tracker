@@ -10,7 +10,7 @@
     <div class="container">
         <h1>User Management System</h1>
         <hr>
-        <h2>Update User</h2>
+        <h2>Edit User</h2>
 
         <form action="#" th:action="@{/web/users/{id}(id=*{id})}" th:object="${user}">
 
@@ -31,10 +31,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-info col-2">Update</button>
+            <button type="submit" class="btn btn-info">Save</button>
+            <a th:href = "@{/web/users}" class="btn btn-secondary">Back</a>
         </form>
         <hr>
-        <a th:href = "@{/web/users}">Back to User List</a>
     </div>
 </body>
 </html>

@@ -46,11 +46,11 @@ public class TransactionWebController {
     return "redirect:/web/transactions";
   }
 
-  @GetMapping("/update/{id}")
+  @GetMapping("/edit/{id}")
   public String updateTransactionForm(@PathVariable Integer id, Model model) {
     TransactionDto transactionDto = httpService.get(TRANSACTION_URI + "/" + id, TransactionDto.class);
     model.addAttribute("transaction", transactionDto);
-    return "transactions/update";
+    return "transactions/edit";
   }
 
   @GetMapping("/{id}")

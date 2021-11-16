@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Transaction Management System</h1>
         <hr>
-        <h2>Update Transaction</h2>
+        <h2>Edit Transaction</h2>
 
         <form action="#" th:action="@{/web/transactions/{id}(id=*{id})}" th:object="${transaction}">
 
@@ -25,10 +25,9 @@
                     <input type="text" th:field="*{categoryId}" class="form-control mb-4 col-4" id="categoryId">
                 </div>
 
-                <label class="col-lg-4">Type:</label>
+                <label for="type" class="col-lg-4">Type:</label>
                 <div class="col-lg-8">
-                    <p th:text="*{type}" class="form-control mb-4 col-4"></p>
-                    <input type="hidden" th:field="*{type}">
+                    <input type="text" th:field="*{type}" class="form-control mb-4 col-4" id="type" readonly style="border: 0;">
                 </div>
 
                 <label for="userId" class="col-lg-4">Amount:</label>
@@ -37,10 +36,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-info col-2">Update</button>
+            <button type="submit" class="btn btn-info">Save</button>
+            <a th:href = "@{/web/transactions}" class="btn btn-secondary">Back</a>
         </form>
         <hr>
-        <a th:href = "@{/web/transactions}">Back to Transaction List</a>
     </div>
 </body>
 </html>

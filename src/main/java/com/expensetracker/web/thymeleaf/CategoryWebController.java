@@ -46,11 +46,11 @@ public class CategoryWebController {
     return "redirect:/web/categories";
   }
 
-  @GetMapping("/update/{id}")
+  @GetMapping("/edit/{id}")
   public String updateCategoryForm(@PathVariable Integer id, Model model) {
     CategoryDto categoryDto = httpService.get(CATEGORY_URI + "/" + id, CategoryDto.class);
     model.addAttribute("category", categoryDto);
-    return "categories/update";
+    return "categories/edit";
   }
 
   @GetMapping("/{id}")

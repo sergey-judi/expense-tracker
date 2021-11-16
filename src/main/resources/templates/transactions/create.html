@@ -30,7 +30,10 @@
 
                 <label for="type" class="col-lg-4">Type:</label>
                 <div class="col-lg-8">
-                    <input type="text" th:field="*{type}" class="form-control mb-4 col-4" id="type">
+                    <select th:field="*{type}" class="form-select form-control mb-4 col-4" id="type">
+                        <option th:value="debit" th:text="DEBIT"></option>
+                        <option th:value="credit" th:text="CREDIT"></option>
+                    </select>
                 </div>
 
                 <label for="userId" class="col-lg-4">Amount:</label>
@@ -39,10 +42,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-info col-2">Save</button>
+            <button type="submit" class="btn btn-info">Save</button>
+            <a th:href = "@{/web/transactions}" class="btn btn-secondary">Back</a>
         </form>
         <hr>
-        <a th:href = "@{/web/transactions}">Back to Transaction List</a>
     </div>
 </body>
 </html>
