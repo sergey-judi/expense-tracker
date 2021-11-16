@@ -17,9 +17,14 @@
         <form action="#" th:action="@{/web/categories}" th:object="${newCategory}"
               method="POST">
 
-            <input type="text" th:field="*{name}" placeholder="Category name" class="form-control mb-4 col-4">
+            <div class="form-group">
+                <label for="name" class="col-4">Name:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{name}" class="form-control mb-4 col-4" id="name">
+                </div>
+            </div>
 
-            <button type="submit" class="btn btn-info col-2">Save Category</button>
+            <button type="submit" class="btn btn-info col-2">Save</button>
         </form>
         <hr>
         <a th:href = "@{/web/categories}">Back to Category List</a>
