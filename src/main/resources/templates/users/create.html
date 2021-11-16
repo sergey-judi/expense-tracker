@@ -17,11 +17,24 @@
         <form action="#" th:action="@{/web/users}" th:object="${newUser}"
               method="POST">
 
-            <input type="text" th:field="*{fullName}" placeholder="User full name" class="form-control mb-4 col-4">
-            <input type="text" th:field="*{email}" placeholder="User email" class="form-control mb-4 col-4">
-            <input type="text" th:field="*{balance}" placeholder="User balance" class="form-control mb-4 col-4">
+            <div class="form-group">
+                <label for="fullName" class="col-4">Full Name:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{fullName}" class="form-control mb-4 col-4" id="fullName">
+                </div>
 
-            <button type="submit" class="btn btn-info col-2">Save User</button>
+                <label for="email" class="col-4">Email:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{email}" class="form-control mb-4 col-4" id="email">
+                </div>
+
+                <label for="balance" class="col-4">Balance:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{balance}" class="form-control mb-4 col-4" id="balance">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-info col-2">Save</button>
         </form>
         <hr>
         <a th:href = "@{/web/users}">Back to User List</a>
