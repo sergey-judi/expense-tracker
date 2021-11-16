@@ -85,8 +85,21 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
+  @Transactional
   public void deleteTransactionById(Integer transactionId) {
     assertTransactionExists(transactionId);
+    Transaction transactionInDb = transactionRepository.getById(transactionId);
+    User userInDb = transactionInDb.getUser();
+    Double transactionAmount = transactionInDb.getAmount();
+
+    if (transactionInDb.getType() == TransactionType.DEBIT) {
+      // balance +=
+      userInDb.increaseBalance(transactionAmount);
+    } else {
+      // balance -=
+      userInDb.decreaseBalance(transactionAmount);
+    }
+
     transactionRepository.deleteById(transactionId);
   }
 
