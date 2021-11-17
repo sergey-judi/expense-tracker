@@ -29,6 +29,12 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
+  public List<Transaction> getAllByUserId(Integer userId) {
+    userService.assertUserExists(userId);
+    return transactionRepository.findAllByUserId(userId);
+  }
+
+  @Override
   public Transaction getById(Integer transactionId) {
     assertTransactionExists(transactionId);
     return transactionRepository.getById(transactionId);
