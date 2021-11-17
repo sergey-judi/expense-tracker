@@ -26,6 +26,10 @@ class TransactionControllerTest extends AbstractBaseControllerTest {
 
   private static final Double ALLOWED_BALANCE_DEVIATION = 0.0001;
 
+  private void assertBalanceEquals(double expected, double actual) {
+    assertTrue(Math.abs(expected - actual) <= ALLOWED_BALANCE_DEVIATION);
+  }
+
   @Test
   @SneakyThrows
   void getAllTransactions() {
@@ -40,10 +44,61 @@ class TransactionControllerTest extends AbstractBaseControllerTest {
         .andReturn();
 
     String responseBody = mvcResult.getResponse().getContentAsString();
-    List<TransactionDto> transactionDtos = objectMapper.readValue(responseBody, new TypeReference<>() {
-    });
+    List<TransactionDto> transactionDtos = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
     assertTrue(transactionDtos.size() >= insertedTransactionsAmount);
+  }
+
+  @Test
+  @SneakyThrows
+  void getAllTransactionsByUserId() {
+    UserDto userDto = insertUser();
+    String transactionType = "debit";
+
+    int insertedTransactionsAmount = 3;
+    Double transactedAmount = 0.0;
+
+    for (int i = 0; i < insertedTransactionsAmount; i++) {
+      TransactionDto insertedTransaction = insertTransactionForDefiniteUser(userDto, transactionType);
+      transactedAmount += insertedTransaction.getAmount();
+    }
+
+    MvcResult mvcResult = mockMvc.perform(get("/transactions/user/{id}", userDto.getId()))
+        .andExpect(status().isOk())
+        .andReturn();
+
+    String responseBody = mvcResult.getResponse().getContentAsString();
+    List<TransactionDto> transactionDtos = objectMapper.readValue(responseBody, new TypeReference<>() {});
+
+    assertTrue(transactionDtos.size() >= insertedTransactionsAmount);
+
+    Double expectedUserBalance = transactionType.equals("debit")
+        ? userDto.getBalance() - transactedAmount
+        : userDto.getBalance() + transactedAmount;
+
+    mvcResult = mockMvc.perform(get("/users/{id}", userDto.getId()))
+        .andExpect(status().isOk())
+        .andReturn();
+
+    responseBody = mvcResult.getResponse().getContentAsString();
+    UserDto insertedUser = objectMapper.readValue(responseBody, new TypeReference<>() {});
+
+    assertBalanceEquals(insertedUser.getBalance(), expectedUserBalance);
+  }
+
+  @Test
+  @SneakyThrows
+  void getAllTransactionsByNotExistingUserId_ReturnsErrorResponse() {
+    UserDto insertedUser = insertUser();
+    int notExistingUserId = insertedUser.getId() + 1;
+
+    String expectedErrorCode = ErrorCode.ENTITY_NOT_FOUND.getCode();
+    String expectedErrorMessage = String.format("User with id='%s' not found", notExistingUserId);
+
+    mockMvc.perform(get("/transactions/user/{id}", notExistingUserId))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.code").value(expectedErrorCode))
+        .andExpect(jsonPath("$.message").value(expectedErrorMessage));
   }
 
   @Test
@@ -76,7 +131,7 @@ class TransactionControllerTest extends AbstractBaseControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString();
     UserDto insertedUser = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
-    assertTrue(Math.abs(insertedUser.getBalance() - expectedUserBalance) <= ALLOWED_BALANCE_DEVIATION);
+    assertBalanceEquals(insertedUser.getBalance(), expectedUserBalance);
   }
 
   @Test
@@ -133,7 +188,7 @@ class TransactionControllerTest extends AbstractBaseControllerTest {
     responseBody = mvcResult.getResponse().getContentAsString();
     UserDto insertedUser = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
-    assertTrue(Math.abs(insertedUser.getBalance() - expectedUserBalance) <= ALLOWED_BALANCE_DEVIATION);
+    assertBalanceEquals(insertedUser.getBalance(), expectedUserBalance);
   }
 
   @Test
@@ -153,7 +208,7 @@ class TransactionControllerTest extends AbstractBaseControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString();
     UserDto insertedUser = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
-    assertTrue(Math.abs(insertedUser.getBalance() - expectedUserBalance) <= ALLOWED_BALANCE_DEVIATION);
+    assertBalanceEquals(insertedUser.getBalance(), expectedUserBalance);
   }
 
   @Test
@@ -189,7 +244,7 @@ class TransactionControllerTest extends AbstractBaseControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString();
     UserDto insertedUser = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
-    assertTrue(Math.abs(insertedUser.getBalance() - expectedUserBalance) <= ALLOWED_BALANCE_DEVIATION);
+    assertBalanceEquals(insertedUser.getBalance(), expectedUserBalance);
   }
 
   @Test

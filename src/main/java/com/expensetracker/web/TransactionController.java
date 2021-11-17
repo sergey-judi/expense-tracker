@@ -37,6 +37,13 @@ public class TransactionController {
         .collect(Collectors.toList());
   }
 
+  @GetMapping("/user/{id}")
+  public List<TransactionDto> getAllTransactionsByUserId(@PathVariable Integer id) {
+    return transactionService.getAllByUserId(id).stream()
+        .map(transactionConverter::toDto)
+        .collect(Collectors.toList());
+  }
+
   @GetMapping("/{id}")
   public TransactionDto getTransaction(@PathVariable Integer id) {
     Transaction retrievedTransaction = transactionService.getById(id);
