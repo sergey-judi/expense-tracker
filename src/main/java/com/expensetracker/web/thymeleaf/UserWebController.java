@@ -21,9 +21,11 @@ public class UserWebController {
   private final HttpService<UserDto> httpService;
 
   private final String USER_URI;
+  private final String TRANSACTION_URI;
 
   public UserWebController(ServerProperties serverProperties, HttpService<UserDto> httpService) {
     this.USER_URI = "http://localhost:" + serverProperties.getPort() + "/users";
+    this.TRANSACTION_URI = "http://localhost:" + serverProperties.getPort() + "/transactions";
     this.httpService = httpService;
   }
 
@@ -31,6 +33,12 @@ public class UserWebController {
   public String getAllUsers(Model model) {
     model.addAttribute("users", httpService.get(USER_URI, List.class));
     return "users/index";
+  }
+
+  @GetMapping("/{id}/transactions")
+  public String getAllTransactionsForUser(@PathVariable Integer id, Model model) {
+    model.addAttribute("transactions", httpService.get(TRANSACTION_URI + "/user/" + id, List.class));
+    return "transactions/list";
   }
 
   @GetMapping("/add")
