@@ -15,6 +15,7 @@
     <a th:href="@{/web/users}" class="btn btn-info mb-3 btn-sm">Back</a>
     <a th:href = "@{/}" class="btn btn-secondary mb-3 btn-sm">To main page</a>
     <h3>Transactions for User #<span th:text="*{id}"></span></h3>
+    <h4> Total debit: <span th:text="*{totalDebit}" class="badge badge-danger"></span> Total credit: <span th:text="*{totalCredit}" class="badge badge-success"></span> </h4>
     <table class="table table-sm table-hover">
         <thead class="table-light">
         <tr>

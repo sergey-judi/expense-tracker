@@ -1,8 +1,12 @@
 package com.expensetracker.web.thymeleaf;
 
+import com.expensetracker.model.TransactionType;
 import com.expensetracker.model.User;
 import com.expensetracker.service.HttpService;
+import com.expensetracker.web.dto.TransactionDto;
 import com.expensetracker.web.dto.UserDto;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +27,13 @@ public class UserWebController {
   private final String USER_URI;
   private final String TRANSACTION_URI;
 
-  public UserWebController(ServerProperties serverProperties, HttpService<UserDto> httpService) {
+  private final ObjectMapper objectMapper;
+
+  public UserWebController(ServerProperties serverProperties, HttpService<UserDto> httpService, ObjectMapper objectMapper) {
     this.USER_URI = "http://localhost:" + serverProperties.getPort() + "/users";
     this.TRANSACTION_URI = "http://localhost:" + serverProperties.getPort() + "/transactions";
     this.httpService = httpService;
+    this.objectMapper = objectMapper;
   }
 
   @GetMapping
@@ -37,7 +44,13 @@ public class UserWebController {
 
   @GetMapping("/{id}/transactions")
   public String getAllTransactionsForUser(@PathVariable Integer id, Model model) {
-    model.addAttribute("transactions", httpService.get(TRANSACTION_URI + "/user/" + id, List.class));
+    List<TransactionDto> transactions = objectMapper.convertValue(httpService.get(TRANSACTION_URI + "/user/" + id, List.class), new TypeReference<>() {});
+    Double totalDebit = getTotalDebitCommitted(transactions);
+    Double totalCredit = getTotalCreditCommitted(transactions);
+
+    model.addAttribute("transactions", transactions);
+    model.addAttribute("totalDebit", totalDebit);
+    model.addAttribute("totalCredit", totalCredit);
     return "transactions/list";
   }
 
@@ -73,4 +86,19 @@ public class UserWebController {
     httpService.delete(id, USER_URI);
     return "redirect:/web/users";
   }
+
+  private Double getTotalDebitCommitted(List<TransactionDto> transactions) {
+    return transactions.stream()
+        .filter(transaction -> transaction.getType() == TransactionType.DEBIT)
+        .mapToDouble(TransactionDto::getAmount)
+        .sum();
+  }
+
+  private Double getTotalCreditCommitted(List<TransactionDto> transactions) {
+    return transactions.stream()
+        .filter(transaction -> transaction.getType() == TransactionType.CREDIT)
+        .mapToDouble(TransactionDto::getAmount)
+        .sum();
+  }
+
 }
