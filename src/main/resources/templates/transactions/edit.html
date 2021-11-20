@@ -17,17 +17,22 @@
             <div class="form-group">
                 <label for="userId" class="col-lg-4">User Id:</label>
                 <div class="col-lg-8">
-                    <input type="text" th:field="*{userId}" class="form-control mb-4 col-4" id="userId">
+                    <input type="text" th:field="*{userId}" class="form-control mb-4 col-4" id="userId" readonly>
                 </div>
 
                 <label for="categoryId" class="col-lg-4">Category Id:</label>
                 <div class="col-lg-8">
-                    <input type="text" th:field="*{categoryId}" class="form-control mb-4 col-4" id="categoryId">
+                    <select th:field="*{categoryId}" class="form-select form-control mb-4 col-4" id="categoryId">
+                        <option th:each="existingCategoryId : ${categoryIds}"
+                                th:value="${existingCategoryId}"
+                                th:text="${existingCategoryId}">
+                        </option>
+                    </select>
                 </div>
 
                 <label for="type" class="col-lg-4">Type:</label>
                 <div class="col-lg-8">
-                    <input type="text" th:field="*{type}" class="form-control mb-4 col-4" id="type" readonly style="border: 0;">
+                    <input type="text" th:field="*{type}" class="form-control mb-4 col-4" id="type" readonly>
                 </div>
 
                 <label for="userId" class="col-lg-4">Amount:</label>
