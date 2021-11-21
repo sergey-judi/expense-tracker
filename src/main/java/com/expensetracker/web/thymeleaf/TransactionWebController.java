@@ -1,7 +1,6 @@
 package com.expensetracker.web.thymeleaf;
 
 import com.expensetracker.service.HttpService;
-import com.expensetracker.web.dto.CategoryDto;
 import com.expensetracker.web.dto.TransactionDto;
 import com.expensetracker.web.dto.UserDto;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -77,13 +76,13 @@ public class TransactionWebController {
         transaction.getAmount(),
         null
     );
-    httpService.put(id, transactionDto, TRANSACTION_URI);
+    httpService.put(transactionDto, TRANSACTION_URI + "/" + id);
     return "redirect:/web/transactions";
   }
 
   @GetMapping("/delete/{id}")
   public String deleteTransaction(@PathVariable Integer id) {
-    httpService.delete(id, TRANSACTION_URI);
+    httpService.delete(TRANSACTION_URI + "/" + id);
     return "redirect:/web/transactions";
   }
 

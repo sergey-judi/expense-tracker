@@ -56,13 +56,13 @@ public class CategoryWebController {
   @GetMapping("/{id}")
   public String updateCategory(@PathVariable Integer id, @ModelAttribute("category") CategoryDto category) {
     CategoryDto categoryDto = new CategoryDto(null, category.getName());
-    httpService.put(id, categoryDto, CATEGORY_URI);
+    httpService.put(categoryDto, CATEGORY_URI + "/" + id);
     return "redirect:/web/categories";
   }
 
   @GetMapping("/delete/{id}")
   public String deleteCategory(@PathVariable Integer id) {
-    httpService.delete(id, CATEGORY_URI);
+    httpService.delete(CATEGORY_URI + "/" + id);
     return "redirect:/web/categories";
   }
 

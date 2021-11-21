@@ -47,7 +47,7 @@ class HttpServiceTest extends AbstractBaseControllerTest {
 
     CategoryDto updatedCategory = categoryEntityProvider.prepareCategoryDto();
 
-    httpService.put(insertedCategory.getId(), updatedCategory, CATEGORY_URI);
+    httpService.put(updatedCategory, CATEGORY_URI + "/" + insertedCategory.getId());
 
     CategoryDto queriedCategory = httpService.get(CATEGORY_URI + "/" + insertedCategory.getId(), CategoryDto.class);
 
@@ -59,7 +59,7 @@ class HttpServiceTest extends AbstractBaseControllerTest {
   void deleteCategory() {
     CategoryDto insertedCategory = insertCategory();
 
-    httpService.delete(insertedCategory.getId(), CATEGORY_URI);
+    httpService.delete(CATEGORY_URI + "/" + insertedCategory.getId());
   }
 
 }

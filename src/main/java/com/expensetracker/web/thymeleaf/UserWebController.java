@@ -77,13 +77,13 @@ public class UserWebController {
   @GetMapping("/{id}")
   public String updateUser(@PathVariable Integer id, @ModelAttribute("user") UserDto user) {
     UserDto userDto = new UserDto(null, user.getFullName(), user.getEmail(), user.getBalance());
-    httpService.put(id, userDto, USER_URI);
+    httpService.put(userDto, USER_URI + "/" + id);
     return "redirect:/web/users";
   }
 
   @GetMapping("/delete/{id}")
   public String deleteUser(@PathVariable Integer id) {
-    httpService.delete(id, USER_URI);
+    httpService.delete(USER_URI + "/" + id);
     return "redirect:/web/users";
   }
 

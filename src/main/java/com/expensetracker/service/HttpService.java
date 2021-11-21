@@ -45,9 +45,9 @@ public class HttpService<T> {
   }
 
   @SneakyThrows
-  public T put(int id, T body, String uri) {
+  public T put(T body, String uri) {
     HttpRequest request = HttpRequest
-        .newBuilder(URI.create(uri + "/" + id))
+        .newBuilder(URI.create(uri))
         .header("Accept", "application/json")
         .header("Content-Type", "application/json")
         .PUT(HttpRequest.BodyPublishers.ofString(serialize(body)))
@@ -58,9 +58,9 @@ public class HttpService<T> {
   }
 
   @SneakyThrows
-  public void delete(int id, String uri) {
+  public void delete(String uri) {
     HttpRequest request = HttpRequest
-        .newBuilder(URI.create(uri + "/" + id))
+        .newBuilder(URI.create(uri))
         .DELETE()
         .build();
 
