@@ -48,7 +48,7 @@ public class UserWebController {
     Double totalDebit = getTotalDebitCommitted(transactions);
     Double totalCredit = getTotalCreditCommitted(transactions);
 
-    model.addAttribute("transactions", transactions);
+    model.addAttribute("transactions", httpService.get(TRANSACTION_URI + "/user/" + id, List.class));
     model.addAttribute("totalDebit", totalDebit);
     model.addAttribute("totalCredit", totalCredit);
     return "transactions/list";

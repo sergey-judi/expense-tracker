@@ -49,7 +49,7 @@ public class TransactionWebController {
     TransactionDto newTransaction = new TransactionDto(null, null, null, "debit", null, null);
     model.addAttribute("newTransaction", newTransaction);
     model.addAttribute("userIds", getUserIds());
-    model.addAttribute("categoryIds", getCategoryIds());
+    model.addAttribute("categories", httpService.get(CATEGORY_URI, List.class));
     return "transactions/create";
   }
 
@@ -63,7 +63,7 @@ public class TransactionWebController {
   public String updateTransactionForm(@PathVariable Integer id, Model model) {
     TransactionDto transactionDto = httpService.get(TRANSACTION_URI + "/" + id, TransactionDto.class);
     model.addAttribute("transaction", transactionDto);
-    model.addAttribute("categoryIds", getCategoryIds());
+    model.addAttribute("categories", httpService.get(CATEGORY_URI, List.class));
     return "transactions/edit";
   }
 
@@ -87,18 +87,10 @@ public class TransactionWebController {
     return "redirect:/web/transactions";
   }
 
-
   private List<Integer> getUserIds() {
     List<UserDto> users = objectMapper.convertValue(httpService.get(USER_URI, List.class), new TypeReference<>() {});
     return users.stream()
         .map(UserDto::getId)
-        .collect(Collectors.toList());
-  }
-
-  private List<Integer> getCategoryIds() {
-    List<CategoryDto> users = objectMapper.convertValue(httpService.get(CATEGORY_URI, List.class), new TypeReference<>() {});
-    return users.stream()
-        .map(CategoryDto::getId)
         .collect(Collectors.toList());
   }
 
