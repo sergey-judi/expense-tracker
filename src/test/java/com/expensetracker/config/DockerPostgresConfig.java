@@ -23,8 +23,8 @@ public class DockerPostgresConfig {
   private String POSTGRES_PASSWORD;
 
   @Bean(destroyMethod = "stop")
-  public PostgreSQLContainer postgreSQLContainer() {
-    PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:13.3")
+  public PostgreSQLContainer<?> postgreSQLContainer() {
+    PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:13.3")
         .withDatabaseName(DB_NAME)
         .withUsername(POSTGRES_USER)
         .withPassword(POSTGRES_PASSWORD);

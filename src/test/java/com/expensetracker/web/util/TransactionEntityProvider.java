@@ -27,7 +27,7 @@ public class TransactionEntityProvider {
     Integer id = null;
     Integer userId = userDto.getId();
     Integer categoryId = categoryDto.getId();
-    Double amount = Double.parseDouble(String.format("%.2f", new Random().nextDouble() * 100));
+    Double amount = new Random().nextDouble() * 100;
     Date time = new Date();
 
     return new TransactionDto(id, userId, categoryId, type, amount, time);
