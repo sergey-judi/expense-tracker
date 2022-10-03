@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>User Management System</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container my-2">
+        <h1>User Management System</h1>
+        <a th:href="@{/web/users/add}" class="btn btn-success mb-3 btn-sm">Add</a>
+        <a th:href = "@{/}" class="btn btn-secondary mb-3 btn-sm">To main page</a>
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr class="table-light">
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Balance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.fullName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.balance}"></td>
+                    <td>
+                        <a th:href="@{/web/users/{id}/transactions(id=${user.id})}" class="btn btn-info btn-sm">Transactions</a>
+                        <a th:href="@{/web/users/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Edit</a>
+                        <a th:href="@{/web/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

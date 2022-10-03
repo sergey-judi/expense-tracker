@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Category Management System</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Category Management System</h1>
+        <hr>
+        <h2>Add Category</h2>
+
+        <form action="#" th:action="@{/web/categories}" th:object="${newCategory}"
+              method="POST">
+
+            <div class="form-group">
+                <label for="name" class="col-4">Name:</label>
+                <div class="col-lg-8">
+                    <input type="text" th:field="*{name}" class="form-control mb-4 col-4" id="name">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-info">Save</button>
+            <a th:href = "@{/web/categories}" class="btn btn-secondary">Back</a>
+        </form>
+        <hr>
+    </div>
+</body>
+</html>

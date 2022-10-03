@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Transaction Management System</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container my-2">
+    <h1>Transaction Management System</h1>
+    <a th:href="@{/web/users}" class="btn btn-info mb-3 btn-sm">Back</a>
+    <a th:href = "@{/}" class="btn btn-secondary mb-3 btn-sm">To main page</a>
+    <h3>Transactions for User #<span th:text="*{id}"></span></h3>
+    <h4> Total debit: <span th:text="*{totalDebit}" class="badge badge-danger"></span> Total credit: <span th:text="*{totalCredit}" class="badge badge-success"></span> </h4>
+    <table class="table table-sm table-hover">
+        <thead class="table-light">
+        <tr>
+            <th>Id</th>
+            <th>CategoryId</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Time</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction.id}"></td>
+            <td th:text="${transaction.categoryId}"></td>
+            <td th:text="${transaction.type}"></td>
+            <td th:text="${transaction.amount}"></td>
+            <td th:text="${transaction.time}"></td>
+            <td>
+                <a th:href="@{/web/transactions/edit/{id}(id=${transaction.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/web/transactions/delete/{id}(id=${transaction.id})}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
