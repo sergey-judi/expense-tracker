@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '2.7.3'
+}
+
+group = 'com.expensetracker'
+version = '0.0.1'
+description = 'expense-tracker'
+java.sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    springBootVersion = '2.7.3'
+    flywayVersion = '9.4.0'
+    lombokVersion = '1.18.24'
+    swaggerVersion = '2.2.2'
+    springdocVersion = '1.6.11'
+    postgresVersion = '42.5.0'
+    h2Version = '2.1.214'
+    testcontainersVersion = '1.17.3'
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+    implementation "org.springdoc:springdoc-openapi-ui:${springdocVersion}"
+
+    runtimeOnly "org.postgresql:postgresql:${postgresVersion}"
+    runtimeOnly "com.h2database:h2:${h2Version}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
+    testImplementation "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
